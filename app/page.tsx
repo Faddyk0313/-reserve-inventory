@@ -6,7 +6,7 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   async function updateInvestory() {
     if (!file) {
-      alert("Please select a CSV file first.");
+      alert("Please upload a CSV file");
       return;
     }
 
