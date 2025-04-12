@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
+  const [password, setPassword] = useState("");
+
   async function updateInvestory() {
     if (!file) {
       alert("Please upload a CSV file");
@@ -12,6 +14,8 @@ export default function Home() {
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("password", password); // ✅ send password
+
 
     try {
       const res = await fetch("/api/py/reserve_stock", {
@@ -35,6 +39,11 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+      <input type="password" title="password" 
+      className="rounded-md border-2 border-gray-300 px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+      placeholder="password" 
+      onChange={(e)=>setPassword(e.target.value)}
+      />
         <input onChange={(e) => {
           if (e.target.files && e.target.files.length > 0) {
             setFile(e.target.files[0]);

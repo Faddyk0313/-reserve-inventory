@@ -3,7 +3,7 @@ import io
 import os
 import requests
 from dotenv import load_dotenv
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File,Form, HTTPException
 
 load_dotenv()
 
@@ -68,10 +68,14 @@ def get_variant_id_by_sku(sku: str):
         return None
 
 @app.post("/api/py/reserve_stock")
-async def reserve_stock(file: UploadFile = File(...)):
+async def reserve_stock(
+    file: UploadFile = File(...),
+    password: str = Form(...)
+):
     if not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only CSV files are supported.")
-
+    if password != os.getenv("PASSWORD"):
+        raise HTTPException(status_code=403, detail="Invalid password")
     contents = await file.read()
     csvfile = io.StringIO(contents.decode("utf-8"))
     reader = csv.DictReader(csvfile)
