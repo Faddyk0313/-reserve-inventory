@@ -9,16 +9,16 @@ export default function Home() {
       alert("Please select a CSV file first.");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
       const res = await fetch("/api/py/reserve_stock", {
         method: "POST",
         body: formData, // ✅ No headers needed for FormData
       });
-  
+
       const data = await res.json();
       if (res.ok) {
         alert("✅ Inventory updated successfully");
@@ -35,7 +35,11 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <input onChange={(e) => setFile(e.target.files[0])} type="file" accept="text/csv"
+        <input onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            setFile(e.target.files[0]);
+          }
+        }} type="file" accept="text/csv"
         />
         <button onClick={updateInvestory} className="rounded-md bg-blue-500 px-4 py-2 text-white">
           upload
