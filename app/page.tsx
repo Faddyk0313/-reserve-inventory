@@ -21,7 +21,7 @@ export default function Home() {
 
       const data = await res.json();
       if (res.ok) {
-        alert("✅ Inventory updated successfully");
+        alert("Inventory updated successfully, " + (data?.admin_url ?? ""));
         console.log(data);
       } else {
         alert("❌ Inventory update failed");
